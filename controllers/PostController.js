@@ -6,8 +6,7 @@ export const create = async (req, res) => {
 	try {
 
 		const doc = new PostModel({
-			title: req.body.title,
-			text: req.body.text,
+			...req.body,
 			user: req.userId,
 		})
 
@@ -82,8 +81,7 @@ export const update = async (req, res) => {
 		const post = await PostModel.updateOne(
 			{ _id: postId },
 			{
-				title: req.body.title,
-				text: req.body.text,
+				...req.body,
 				user: req.userId,
 			},
 			(err, doc) => {
@@ -110,4 +108,11 @@ export const update = async (req, res) => {
 			msg: "ERR: update error 3"
 		})
 	}
+}
+
+export const tags = async (req, res) => {
+	const posts = await PostModel.find().limit(5).exec() // * limit
+
+	const tags = posts.map(post => post.tags)
+	res.json(tags.flat())
 }
