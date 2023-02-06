@@ -1,20 +1,9 @@
 import PostModel from "../models/Post.js"
-import { validationResult } from "express-validator"
 
-function valid(req) {
-	const errors = validationResult(req)
-
-	if (!errors.isEmpty()) {
-		console.log(errors.array())
-		return res.status(500).json(errors.array())
-	}
-}
 
 export const create = async (req, res) => {
 
 	try {
-
-		valid(req)
 
 		const doc = new PostModel({
 			title: req.body.title,
@@ -87,8 +76,6 @@ export const remove = async (req, res) => {
 
 export const update = async (req, res) => {
 	try {
-
-		valid(req)
 
 		const postId = req.params.id
 

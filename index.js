@@ -2,10 +2,11 @@ import express from "express"
 import mongoose from "mongoose"
 import multer from "multer"
 
-import * as UserController from "./controllers/UserController.js"
-import * as PostController from "./controllers/PostController.js"
+import { UserController, PostController } from "./controllers/index.js"
+import { auth, valid } from "./utils/index.js"
+
 import * as Validation from "./validation.js"
-import { auth } from "./utils/auth.js"
+
 
 const app = express()
 app.listen(1111, (err) => err ? console.log("SERVER ERROR", err) : console.log("SERVER OK"))
@@ -15,8 +16,8 @@ mongoose.connect("mongodb+srv://enotowitch:qwerty123@cluster0.9tnodta.mongodb.ne
 	.then(console.log("DB OK")).catch(err => console.log("DB ERROR", err))
 
 // ! user
-app.post("/register", Validation.user, UserController.register)
-app.post("/login", Validation.user, UserController.login)
+app.post("/register", Validation.user, valid, UserController.register)
+app.post("/login", Validation.user, valid, UserController.login)
 app.post("/auth", auth, UserController.auth)
 // ? user
 
@@ -26,9 +27,9 @@ app.get("/post/:id", PostController.getOneSimple)
 app.get("/post2/:id", PostController.getOneComplex)
 
 app.delete("/post/:id", PostController.remove)
-app.patch("/post/:id", auth, Validation.post, PostController.update)
+app.patch("/post/:id", auth, Validation.post, valid, PostController.update)
 
-app.post("/post", auth, Validation.post, PostController.create)
+app.post("/post", auth, Validation.post, valid, PostController.create)
 // ? post
 
 // ! multer
