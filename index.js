@@ -25,11 +25,11 @@ app.post("/auth", auth, UserController.auth)
 
 // !! post
 app.get("/post", PostController.getAll)
-app.get("/post/:id", PostController.getOneSimple)
-app.get("/post2/:id", PostController.getOneComplex)
+// app.get("/post/:id", PostController.getOneSimple)
+app.get("/posts/:id", PostController.getOneComplex)
 
 app.delete("/post/:id", PostController.remove)
-app.patch("/post/:id", auth, Validation.post, valid, PostController.update)
+app.patch("/posts/:id/edit", auth, Validation.post, valid, PostController.update)
 
 app.post("/post", auth, Validation.post, valid, PostController.create)
 

@@ -5,7 +5,7 @@ export const create = async (req, res) => {
 
 	try {
 
-		const doc = new PostModel({
+		const doc = await new PostModel({
 			...req.body,
 			user: req.userId,
 		})
@@ -39,7 +39,8 @@ export const getOneComplex = async (req, res) => {
 			$inc: { viewCount: 1 }
 		},
 		{ returnDocument: "after" }
-	)
+	).populate("user").exec()
+
 	res.json(post)
 }
 
@@ -78,7 +79,7 @@ export const update = async (req, res) => {
 
 		const postId = req.params.id
 
-		const post = await PostModel.updateOne(
+		await PostModel.updateOne(
 			{ _id: postId },
 			{
 				...req.body,
@@ -99,7 +100,9 @@ export const update = async (req, res) => {
 					})
 				}
 
-				res.json(post)
+				res.json({
+					success: true
+				})
 			}
 		)
 	} catch (err) {

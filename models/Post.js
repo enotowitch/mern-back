@@ -18,7 +18,8 @@ const PostSchema = new mongoose.Schema({
 	tags: {
 		type: Array,
 		default: []
-	}
+	},
+	imgUrl: String
 },
 	{
 		timestamps: true
